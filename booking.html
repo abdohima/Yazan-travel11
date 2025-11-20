@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحجز والدفع - يزن ترافل</title>
+    <link rel="icon" type="image/png" href="https://j.top4top.io/p_3608n4joc2.png">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/booking.css">
+</head>
+<body>
+    <!-- Audio Element -->
+    <audio id="music" preload="auto" playsinline>
+        <source src="https://files.catbox.moe/wf50t0.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <img src="https://j.top4top.io/p_3608n4joc2.png" alt="يزن ترافل" class="loading-logo">
+            <div class="loading-spinner"></div>
+            <p>جاري تحميل صفحة الحجز...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="https://j.top4top.io/p_3608n4joc2.png" alt="يزن ترافل" class="logo-img">
+                    <span class="logo-text">يزن ترافل</span>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">الرئيسية</a></li>
+                    <li class="nav-item"><a href="index.html#hotels" class="nav-link">الفنادق</a></li>
+                    <li class="nav-item"><a href="index.html#tours" class="nav-link">الرحلات</a></li>
+                    <li class="nav-item"><a href="index.html#offers" class="nav-link">العروض</a></li>
+                </ul>
+                <div class="nav-toggle" id="navToggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Booking Section -->
+    <section class="booking-section">
+        <div class="container">
+            <div class="booking-header">
+                <h1>إتمام الحجز</h1>
+                <p>يرجى تعبئة البيانات التالية لإتمام عملية الحجز</p>
+            </div>
+
+            <div class="booking-content">
+                <div class="booking-steps">
+                    <div class="step active" id="step1">
+                        <div class="step-number">1</div>
+                        <div class="step-title">معلومات الحجز</div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-number">2</div>
+                        <div class="step-title">معلومات العميل</div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-number">3</div>
+                        <div class="step-title">الدفع</div>
+                    </div>
+                    <div class="step" id="step4">
+                        <div class="step-number">4</div>
+                        <div class="step-title">التأكيد</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Booking Information -->
+                <div class="booking-step-content active" id="step1Content">
+                    <div class="booking-item-card" id="bookingItemCard">
+                        <!-- سيتم ملؤه بالبيانات -->
+                    </div>
+
+                    <form id="bookingInfoForm" class="booking-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="checkIn">تاريخ الوصول</label>
+                                <input type="date" id="checkIn" name="checkIn" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="checkOut">تاريخ المغادرة</label>
+                                <input type="date" id="checkOut" name="checkOut" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="guests">عدد الضيوف</label>
+                                <select id="guests" name="guests" required>
+                                    <option value="1">1 شخص</option>
+                                    <option value="2" selected>2 أشخاص</option>
+                                    <option value="3">3 أشخاص</option>
+                                    <option value="4">4 أشخاص</option>
+                                    <option value="5+">5+ أشخاص</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="roomType">نوع الغرفة</label>
+                                <select id="roomType" name="roomType" required>
+                                    <option value="standard">غرفة قياسية</option>
+                                    <option value="deluxe">غرفة ديلوكس</option>
+                                    <option value="suite">جناح فاخر</option>
+                                    <option value="villa">فيلا خاصة</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="specialRequests">طلبات خاصة</label>
+                            <textarea id="specialRequests" name="specialRequests" rows="3" 
+                                placeholder="أي طلبات خاصة مثل: سرير إضافي، نظام غذائي خاص..."></textarea>
+                        </div>
+
+                        <div class="price-calculation" id="priceCalculation">
+                            <h3>تفاصيل السعر</h3>
+                            <div class="price-item">
+                                <span>سعر الليلة:</span>
+                                <span id="pricePerNight">-</span>
+                            </div>
+                            <div class="price-item">
+                                <span>عدد الليالي:</span>
+                                <span id="numberOfNights">-</span>
+                            </div>
+                            <div class="price-item">
+                                <span>الضرائب والرسوم:</span>
+                                <span id="taxesAndFees">-</span>
+                            </div>
+                            <div class="price-item total">
+                                <span>الإجمالي:</span>
+                                <span id="totalPrice" class="total-price">-</span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">
+                            الاستمرار
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Step 2: Customer Information -->
+                <div class="booking-step-content" id="step2Content">
+                    <form id="customerInfoForm" class="booking-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName">الاسم الأول</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lastName">الاسم الأخير</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">البريد الإلكتروني</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">رقم الهاتف</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="nationality">الجنسية</label>
+                                <select id="nationality" name="nationality" required>
+                                    <option value="">اختر الجنسية</option>
+                                    <option value="EG">مصر</option>
+                                    <option value="SA">السعودية</option>
+                                    <option value="AE">الإمارات</option>
+                                    <option value="KW">الكويت</option>
+                                    <option value="QA">قطر</option>
+                                    <option value="BH">البحرين</option>
+                                    <option value="OM">عمان</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="idNumber">رقم الهوية/الجواز</label>
+                                <input type="text" id="idNumber" name="idNumber" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergencyContact">جهة الاتصال في حالات الطوارئ</label>
+                            <input type="text" id="emergencyContact" name="emergencyContact" required>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <label for="terms">أوافق على <a href="#" target="_blank">شروط الخدمة</a> و<a href="#" target="_blank">سياسة الخصوصية</a></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                <label for="newsletter">أرغب في تلقي عروض وتحديثات عبر البريد الإلكتروني</label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                                رجوع
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep()">
+                                الاستمرار
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 3: Payment -->
+                <div class="booking-step-content" id="step3Content">
+                    <div class="payment-methods">
+                        <h3>اختر طريقة الدفع</h3>
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="instapay" checked>
+                                <div class="payment-card">
+                                    <i class="fas fa-credit-card"></i>
+                                    <span>إنستا باي</span>
+                                    <small>الدفع الإلكتروني الفوري</small>
+                                </div>
+                            </label>
+                            
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="vodafone-cash">
+                                <div class="payment-card">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>فودافون كاش</span>
+                                    <small>الدفع عبر المحمول</small>
+                                </div>
+                            </label>
+                            
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="bank-transfer">
+                                <div class="payment-card">
+                                    <i class="fas fa-university"></i>
+                                    <span>تحويل بنكي</span>
+                                    <small>تحويل إلى حسابنا البنكي</small>
+                                </div>
+                            </label>
+                            
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="cash">
+                                <div class="payment-card">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>دفع نقدي</span>
+                                    <small>الدفع عند الوصول</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="payment-details" id="paymentDetails">
+                        <h3>تفاصيل الدفع</h3>
+                        <div class="final-price">
+                            <div class="price-breakdown">
+                                <div class="price-item">
+                                    <span>سعر الليلة:</span>
+                                    <span id="finalPricePerNight">-</span>
+                                </div>
+                                <div class="price-item">
+                                    <span>عدد الليالي:</span>
+                                    <span id="finalNumberOfNights">-</span>
+                                </div>
+                                <div class="price-item">
+                                    <span>الضرائب والرسوم:</span>
+                                    <span id="finalTaxesAndFees">-</span>
+                                </div>
+                                <div class="price-item total">
+                                    <span>الإجمالي:</span>
+                                    <span id="finalTotalPrice" class="total-price">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-security">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>يتم تشفير جميع بيانات الدفع الخاصة بك باستخدام تقنية SSL عالية الأمان</p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">
+                            رجوع
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="processPayment()">
+                            تأكيد الحجز
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Confirmation -->
+                <div class="booking-step-content" id="step4Content">
+                    <div class="confirmation-card">
+                        <div class="confirmation-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h2>تم الحجز بنجاح!</h2>
+                        <p>شكراً لاختياركم يزن ترافل. تم تأكيد حجزكم وسنتواصل معكم قريباً.</p>
+                        
+                        <div class="booking-summary" id="bookingSummary">
+                            <!-- سيتم ملؤه بالبيانات -->
+                        </div>
+
+                        <div class="confirmation-actions">
+                            <button onclick="sendWhatsAppConfirmation()" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                إرسال عبر واتساب
+                            </button>
+                            <button onclick="printBooking()" class="btn btn-secondary">
+                                <i class="fas fa-print"></i>
+                                طباعة الحجز
+                            </button>
+                            <button onclick="goToHome()" class="btn btn-primary">
+                                العودة للرئيسية
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Chat -->
+    <div class="whatsapp-chat">
+        <a href="https://wa.me/201273426669" target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>يزن ترافل</h3>
+                    <p>وجهتك المثالية للسياحة والسفر في مصر والعالم العربي</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/201273426669"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="index.html#hotels">الفنادق</a></li>
+                        <li><a href="index.html#tours">الرحلات</a></li>
+                        <li><a href="index.html#offers">العروض</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>تواصل معنا</h4>
+                    <p><i class="fas fa-phone"></i> 01273426669</p>
+                    <p><i class="fas fa-envelope"></i> abdo.heem12@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> مصر</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 يزن ترافل. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/booking.js"></script>
+</body>
+</html>

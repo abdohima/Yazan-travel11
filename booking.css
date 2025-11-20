@@ -1,0 +1,559 @@
+/* Booking Styles */
+
+/* Booking Section */
+.booking-section {
+    padding: 120px 0 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.booking-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: white;
+}
+
+.booking-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.booking-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Booking Steps */
+.booking-steps {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    min-width: 120px;
+}
+
+.step.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--secondary-color);
+    transform: translateY(-5px);
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.step.active .step-number {
+    background: var(--secondary-color);
+    color: var(--dark-color);
+}
+
+.step-title {
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Booking Content */
+.booking-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 30px;
+    padding: 3rem;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Booking Step Content */
+.booking-step-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.booking-step-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Booking Item Card */
+.booking-item-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    border: 2px solid var(--border-color);
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.item-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.item-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.item-description {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.item-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--light-color);
+    border-radius: 12px;
+}
+
+.meta-item i {
+    color: var(--secondary-color);
+}
+
+/* Booking Form */
+.booking-form {
+    margin-top: 2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Price Calculation */
+.price-calculation {
+    background: var(--light-color);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 2px solid var(--border-color);
+}
+
+.price-calculation h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.price-item:last-child {
+    margin-bottom: 0;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border-color);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.price-item.total {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+.total-price {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Checkbox Container */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+
+.checkbox-container label {
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+    font-weight: normal;
+}
+
+.checkbox-container a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.checkbox-container a:hover {
+    text-decoration: underline;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Payment Methods */
+.payment-methods {
+    margin-bottom: 2rem;
+}
+
+.payment-methods h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+}
+
+.payment-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.payment-option {
+    display: block;
+    cursor: pointer;
+}
+
+.payment-option input[type="radio"] {
+    display: none;
+}
+
+.payment-card {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.payment-option input[type="radio"]:checked + .payment-card {
+    border-color: var(--primary-color);
+    background: rgba(37, 99, 235, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+}
+
+.payment-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.payment-card span {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.payment-card small {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* Payment Details */
+.payment-details {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 2px solid var(--border-color);
+}
+
+.payment-details h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+}
+
+.final-price {
+    background: var(--light-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+}
+
+.price-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Payment Security */
+.payment-security {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    color: #059669;
+}
+
+.payment-security i {
+    font-size: 2rem;
+    color: #10b981;
+}
+
+.payment-security p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Confirmation Card */
+.confirmation-card {
+    text-align: center;
+    background: white;
+    border-radius: 30px;
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--success-color);
+}
+
+.confirmation-icon {
+    font-size: 4rem;
+    color: var(--success-color);
+    margin-bottom: 1.5rem;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.confirmation-card h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--success-color);
+    margin-bottom: 1rem;
+}
+
+.confirmation-card p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.booking-summary {
+    background: var(--light-color);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: right;
+}
+
+.confirmation-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+    background: #25d366;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-whatsapp:hover {
+    background: #128c7e;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .booking-header h1 {
+        font-size: 2rem;
+    }
+    
+    .booking-steps {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .booking-content {
+        padding: 2rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .payment-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .confirmation-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .item-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .item-meta {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* RTL Support */
+.booking-section {
+    direction: rtl;
+    text-align: right;
+}
+
+.booking-form {
+    direction: rtl;
+    text-align: right;
+}
+
+.payment-methods {
+    direction: rtl;
+    text-align: right;
+}
+
+.confirmation-card {
+    direction: rtl;
+    text-align: center;
+}
+
+.booking-summary {
+    direction: rtl;
+    text-align: right;
+}

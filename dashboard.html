@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - يزن ترافل</title>
+    <link rel="icon" type="image/png" href="https://j.top4top.io/p_3608n4joc2.png">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <img src="https://j.top4top.io/p_3608n4joc2.png" alt="يزن ترافل" class="loading-logo">
+            <div class="loading-spinner"></div>
+            <p>جاري تحميل لوحة التحكم...</p>
+        </div>
+    </div>
+
+    <!-- Admin Container -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="https://j.top4top.io/p_3608n4joc2.png" alt="يزن ترافل" class="sidebar-logo">
+                <div class="sidebar-title">يزن ترافل</div>
+                <div class="sidebar-subtitle">لوحة التحكم الإدارية</div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="#dashboard" class="sidebar-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="sidebar-text">الإحصائيات</span>
+                </a>
+                
+                <a href="#hotels" class="sidebar-item" onclick="showSection('hotels')">
+                    <i class="fas fa-hotel"></i>
+                    <span class="sidebar-text">الفنادق</span>
+                </a>
+                
+                <a href="#tours" class="sidebar-item" onclick="showSection('tours')">
+                    <i class="fas fa-route"></i>
+                    <span class="sidebar-text">الرحلات</span>
+                </a>
+                
+                <a href="#bookings" class="sidebar-item" onclick="showSection('bookings')">
+                    <i class="fas fa-calendar-check"></i>
+                    <span class="sidebar-text">الحجوزات</span>
+                </a>
+                
+                <a href="#offers" class="sidebar-item" onclick="showSection('offers')">
+                    <i class="fas fa-percentage"></i>
+                    <span class="sidebar-text">العروض</span>
+                </a>
+                
+                <a href="#reviews" class="sidebar-item" onclick="showSection('reviews')">
+                    <i class="fas fa-star"></i>
+                    <span class="sidebar-text">التقييمات</span>
+                </a>
+                
+                <a href="#settings" class="sidebar-item" onclick="showSection('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span class="sidebar-text">الإعدادات</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button onclick="logout()" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <header class="admin-header">
+                <h1 class="admin-title" id="pageTitle">الإحصائيات</h1>
+                <div class="admin-user">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name" id="adminName">مدير النظام</div>
+                        <div class="user-role">مدير</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="admin-section">
+                <div class="dashboard-stats">
+                    <div class="dashboard-stat">
+                        <div class="stat-bg-icon">
+                            <i class="fas fa-hotel"></i>
+                        </div>
+                        <div class="stat-value" id="dashboardHotels">-</div>
+                        <div class="stat-label">فندق</div>
+                        <div class="stat-change positive">+12% هذا الشهر</div>
+                    </div>
+
+                    <div class="dashboard-stat">
+                        <div class="stat-bg-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <div class="stat-value" id="dashboardTours">-</div>
+                        <div class="stat-label">رحلة</div>
+                        <div class="stat-change positive">+8% هذا الشهر</div>
+                    </div>
+
+                    <div class="dashboard-stat">
+                        <div class="stat-bg-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-value" id="dashboardBookings">-</div>
+                        <div class="stat-label">حجز</div>
+                        <div class="stat-change positive">+25% هذا الشهر</div>
+                    </div>
+
+                    <div class="dashboard-stat">
+                        <div class="stat-bg-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-value" id="dashboardOffers">-</div>
+                        <div class="stat-label">عرض</div>
+                        <div class="stat-change positive">+5% هذا الشهر</div>
+                    </div>
+                </div>
+
+                <!-- Recent Bookings -->
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">أحدث الحجوزات</h2>
+                        <button class="btn-add" onclick="showSection('bookings')">
+                            <i class="fas fa-plus"></i>
+                            حجز جديد
+                        </button>
+                    </div>
+                    <div id="recentBookings">
+                        <!-- سيتم ملؤه بالبيانات -->
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">إحصائيات الحجوزات</h2>
+                    </div>
+                    <canvas id="bookingsChart" width="400" height="200"></canvas>
+                </div>
+            </section>
+
+            <!-- Hotels Section -->
+            <section id="hotelsSection" class="admin-section" style="display: none;">
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">إدارة الفنادق</h2>
+                        <button class="btn-add" onclick="showAddHotelModal()">
+                            <i class="fas fa-plus"></i>
+                            إضافة فندق
+                        </button>
+                    </div>
+                    <div id="hotelsTable">
+                        <!-- سيتم ملؤه بالبيانات -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tours Section -->
+            <section id="toursSection" class="admin-section" style="display: none;">
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">إدارة الرحلات</h2>
+                        <button class="btn-add" onclick="showAddTourModal()">
+                            <i class="fas fa-plus"></i>
+                            إضافة رحلة
+                        </button>
+                    </div>
+                    <div id="toursTable">
+                        <!-- سيتم ملؤه بالبيانات -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bookings Section -->
+            <section id="bookingsSection" class="admin-section" style="display: none;">
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">إدارة الحجوزات</h2>
+                        <button class="btn-add" onclick="showAddBookingModal()">
+                            <i class="fas fa-plus"></i>
+                            حجز جديد
+                        </button>
+                    </div>
+                    <div id="bookingsTable">
+                        <!-- سيتم ملؤه بالبيانات -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Offers Section -->
+            <section id="offersSection" class="admin-section" style="display: none;">
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">إدارة العروض</h2>
+                        <button class="btn-add" onclick="showAddOfferModal()">
+                            <i class="fas fa-plus"></i>
+                            إضافة عرض
+                        </button>
+                    </div>
+                    <div id="offersTable">
+                        <!-- سيتم ملؤه بالبيانات -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reviews Section -->
+            <section id="reviewsSection" class="admin-section" style="display: none;">
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">إدارة التقييمات</h2>
+                    </div>
+                    <div id="reviewsTable">
+                        <!-- سيتم ملؤه بالبيانات -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settingsSection" class="admin-section" style="display: none;">
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">الإعدادات العامة</h2>
+                    </div>
+                    <div id="settingsForm">
+                        <!-- سيتم ملؤه بالبيانات -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/js/all.min.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

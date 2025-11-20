@@ -1,56 +1,182 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>TET - مثال متعدد اللغات</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding:20px; background:#0a0a0a; color:#00ffff; }
-    .btn { padding:8px 12px; margin:4px; cursor:pointer; border-radius:4px; border:1px solid #00ffff; background:transparent; color:inherit; }
-    .lang { margin-bottom:10px; }
-    #cursor { position:fixed; width:12px; height:12px; border-radius:50%; background:#00ffff; pointer-events:none; transform:translate(-50%,-50%); z-index:9999; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>يزن ترافل - وجهتك المثالية للسياحة والسفر</title>
+    <link rel="icon" type="image/png" href="https://j.top4top.io/p_3608n4joc2.png">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div id="cursor"></div>
-  <h1 id="title">تحميل...</h1>
-  <p id="desc"></p>
-  <div class="lang">
-    <button class="btn" data-lang="ar">العربية</button>
-    <button class="btn" data-lang="en">English</button>
-    <button class="btn" data-lang="ru">Русский</button>
-    <button class="btn" data-lang="de">Deutsch</button>
-  </div>
+    <!-- Audio Element -->
+    <audio id="music" preload="auto" playsinline>
+        <source src="https://files.catbox.moe/wf50t0.mp3" type="audio/mpeg">
+    </audio>
 
-  <button id="bookBtn" class="btn">احجز الآن</button>
-  <button id="payBtn" class="btn">ادفع عبر InstaPay</button>
-  <a id="waLink" class="btn" href="#" target="_blank">WhatsApp</a>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <canvas id="particlesCanvas"></canvas>
 
-  <script>
-  let translations = {};
-  let currentLang = 'ar';
-  async function loadTranslations(){
-    const res = await fetch('translations.json');
-    translations = await res.json();
-    applyTranslations();
-  }
-  function applyTranslations(){
-    document.getElementById('title').textContent = translations[currentLang].heroTitle || 'TET';
-    document.getElementById('desc').textContent = translations[currentLang].heroDesc || '';
-    document.getElementById('bookBtn').textContent = translations[currentLang].bookNow || 'Book';
-    document.getElementById('payBtn').textContent = translations[currentLang].payment || 'Pay';
-    const waMsg = encodeURIComponent(translations[currentLang].whatsappMessage || 'Hello');
-    document.getElementById('waLink').href = `https://wa.me/201273426669?text=${waMsg}`;
-  }
-  document.querySelectorAll('.btn[data-lang]').forEach(b=>{
-    b.addEventListener('click', ()=>{ currentLang = b.getAttribute('data-lang'); applyTranslations(); });
-  });
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="https://j.top4top.io/p_3608n4joc2.png" alt="يزن ترافل" class="logo-img">
+                    <span class="logo-text">يزن ترافل</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item"><a href="#home" class="nav-link">الرئيسية</a></li>
+                    <li class="nav-item"><a href="#hotels" class="nav-link">الفنادق</a></li>
+                    <li class="nav-item"><a href="#tours" class="nav-link">الرحلات</a></li>
+                    <li class="nav-item"><a href="#offers" class="nav-link">العروض</a></li>
+                    <li class="nav-item"><a href="admin/login.html" class="nav-link">لوحة التحكم</a></li>
+                </ul>
+                <div class="nav-toggle" id="navToggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-  // cursor effect
-  const cursor = document.getElementById('cursor');
-  document.addEventListener('mousemove', e=>{ cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">اكتشف أجمل الوجهات السياحية</h1>
+            <p class="hero-subtitle">نقدم لك أفضل الفنادق والرحلات السياحية في مصر والعالم العربي</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToSection('hotels')">استكشف الفنادق</button>
+                <button class="btn btn-secondary" onclick="scrollToSection('tours')">رحلات سياحية</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://j.top4top.io/p_3608n4joc2.png" alt="يزن ترافل" class="floating">
+        </div>
+    </section>
 
-  loadTranslations();
-  </script>
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-box">
+                <h2>ابحث عن فندقك أو رحلتك المثالية</h2>
+                <form class="search-form" id="searchForm">
+                    <div class="search-group">
+                        <label for="destination">الوجهة</label>
+                        <input type="text" id="destination" placeholder="أين تريد أن تذهب؟" required>
+                    </div>
+                    <div class="search-group">
+                        <label for="checkin">تاريخ الوصول</label>
+                        <input type="date" id="checkin" required>
+                    </div>
+                    <div class="search-group">
+                        <label for="checkout">تاريخ المغادرة</label>
+                        <input type="date" id="checkout" required>
+                    </div>
+                    <div class="search-group">
+                        <label for="guests">عدد الضيوف</label>
+                        <select id="guests" required>
+                            <option value="1">1 شخص</option>
+                            <option value="2">2 أشخاص</option>
+                            <option value="3">3 أشخاص</option>
+                            <option value="4">4 أشخاص</option>
+                            <option value="5+">5+ أشخاص</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">بحث</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hotels Section -->
+    <section id="hotels" class="hotels-section">
+        <div class="container">
+            <h2 class="section-title">الفنادق المميزة</h2>
+            <div class="hotels-grid" id="hotelsGrid">
+                <!-- سيتم ملؤها بالبيانات من JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <h2 class="section-title">مواقع فنادقنا على الخريطة</h2>
+            <div class="map-container">
+                <div id="map" class="map"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tours Section -->
+    <section id="tours" class="tours-section">
+        <div class="container">
+            <h2 class="section-title">الرحلات السياحية</h2>
+            <div class="tours-grid" id="toursGrid">
+                <!-- سيتم ملؤها بالبيانات من JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Offers Section -->
+    <section id="offers" class="offers-section">
+        <div class="container">
+            <h2 class="section-title">العروض الخاصة</h2>
+            <div class="offers-grid" id="offersGrid">
+                <!-- سيتم ملؤها بالبيانات من JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Chat -->
+    <div class="whatsapp-chat">
+        <a href="https://wa.me/201273426669" target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>يزن ترافل</h3>
+                    <p>وجهتك المثالية للسياحة والسفر في مصر والعالم العربي</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/201273426669"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#hotels">الفنادق</a></li>
+                        <li><a href="#tours">الرحلات</a></li>
+                        <li><a href="#offers">العروض</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>تواصل معنا</h4>
+                    <p><i class="fas fa-phone"></i> 01273426669</p>
+                    <p><i class="fas fa-envelope"></i> abdo.heem12@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> مصر</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 يزن ترافل. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

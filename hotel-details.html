@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل الفندق - يزن ترافل</title>
+    <link rel="icon" type="image/png" href="https://j.top4top.io/p_3608n4joc2.png">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/details.css">
+</head>
+<body>
+    <!-- Audio Element -->
+    <audio id="music" preload="auto" playsinline>
+        <source src="https://files.catbox.moe/wf50t0.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <canvas id="particlesCanvas"></canvas>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <img src="https://j.top4top.io/p_3608n4joc2.png" alt="يزن ترافل" class="loading-logo">
+            <div class="loading-spinner"></div>
+            <p>جاري تحميل تفاصيل الفندق...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="https://j.top4top.io/p_3608n4joc2.png" alt="يزن ترافل" class="logo-img">
+                    <span class="logo-text">يزن ترافل</span>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">الرئيسية</a></li>
+                    <li class="nav-item"><a href="index.html#hotels" class="nav-link">الفنادق</a></li>
+                    <li class="nav-item"><a href="index.html#tours" class="nav-link">الرحلات</a></li>
+                    <li class="nav-item"><a href="index.html#offers" class="nav-link">العروض</a></li>
+                </ul>
+                <div class="nav-toggle" id="navToggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hotel Details Section -->
+    <section class="hotel-details-section">
+        <div class="container">
+            <!-- Hotel Header -->
+            <div class="hotel-header" id="hotelHeader">
+                <!-- سيتم ملؤه بالبيانات -->
+            </div>
+
+            <!-- Hotel Gallery -->
+            <div class="hotel-gallery" id="hotelGallery">
+                <!-- سيتم ملؤه بالبيانات -->
+            </div>
+
+            <!-- Hotel Content -->
+            <div class="hotel-content">
+                <div class="content-grid">
+                    <!-- Hotel Info -->
+                    <div class="hotel-info">
+                        <div class="info-section">
+                            <h3>وصف الفندق</h3>
+                            <p id="hotelDescription"></p>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h3>المميزات والخدمات</h3>
+                            <div class="features-grid" id="hotelFeatures">
+                                <!-- سيتم ملؤه بالبيانات -->
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h3>الموقع على الخريطة</h3>
+                            <div id="hotelMap" class="hotel-map"></div>
+                        </div>
+                    </div>
+
+                    <!-- Booking Form -->
+                    <div class="booking-form-container">
+                        <div class="booking-form">
+                            <h3>احجز الآن</h3>
+                            <form id="bookingForm">
+                                <div class="form-group">
+                                    <label for="customerName">الاسم الكامل</label>
+                                    <input type="text" id="customerName" name="customerName" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="customerEmail">البريد الإلكتروني</label>
+                                    <input type="email" id="customerEmail" name="customerEmail" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="customerPhone">رقم الهاتف</label>
+                                    <input type="tel" id="customerPhone" name="customerPhone" required>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="checkIn">تاريخ الوصول</label>
+                                        <input type="date" id="checkIn" name="checkIn" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="checkOut">تاريخ المغادرة</label>
+                                        <input type="date" id="checkOut" name="checkOut" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="guests">عدد الضيوف</label>
+                                    <select id="guests" name="guests" required>
+                                        <option value="1">1 شخص</option>
+                                        <option value="2">2 أشخاص</option>
+                                        <option value="3">3 أشخاص</option>
+                                        <option value="4">4 أشخاص</option>
+                                        <option value="5+">5+ أشخاص</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="roomType">نوع الغرفة</label>
+                                    <select id="roomType" name="roomType" required>
+                                        <option value="standard">غرفة قياسية</option>
+                                        <option value="deluxe">غرفة ديلوكس</option>
+                                        <option value="suite">جناح فاخر</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="notes">ملاحظات خاصة</label>
+                                    <textarea id="notes" name="notes" rows="3" placeholder="أي ملاحظات أو طلبات خاصة..."></textarea>
+                                </div>
+                                
+                                <div class="price-summary" id="priceSummary">
+                                    <div class="price-item">
+                                        <span>سعر الليلة:</span>
+                                        <span id="pricePerNight">-</span>
+                                    </div>
+                                    <div class="price-item">
+                                        <span>عدد الليالي:</span>
+                                        <span id="numberOfNights">-</span>
+                                    </div>
+                                    <div class="price-item">
+                                        <span>الإجمالي:</span>
+                                        <span id="totalPrice" class="total-price">-</span>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                    تأكيد الحجز
+                                </button>
+                                
+                                <div class="whatsapp-booking">
+                                    <p>أو تواصل عبر واتساب للحجز السريع:</p>
+                                    <a href="https://wa.me/201273426669" target="_blank" class="btn btn-whatsapp">
+                                        <i class="fab fa-whatsapp"></i>
+                                        حجز عبر واتساب
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section">
+        <div class="container">
+            <h2 class="section-title">تقييمات العملاء</h2>
+            <div class="reviews-grid" id="reviewsGrid">
+                <!-- سيتم ملؤه بالبيانات -->
+            </div>
+            
+            <div class="add-review">
+                <h3>أضف تقييمك</h3>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewerName">اسمك</label>
+                        <input type="text" id="reviewerName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reviewRating">التقييم</label>
+                        <div class="rating-input" id="ratingInput">
+                            <span class="star" data-rating="1">⭐</span>
+                            <span class="star" data-rating="2">⭐</span>
+                            <span class="star" data-rating="3">⭐</span>
+                            <span class="star" data-rating="4">⭐</span>
+                            <span class="star" data-rating="5">⭐</span>
+                        </div>
+                        <input type="hidden" id="reviewRating" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reviewComment">تعليقك</label>
+                        <textarea id="reviewComment" rows="3" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">إرسال التقييم</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Chat -->
+    <div class="whatsapp-chat">
+        <a href="https://wa.me/201273426669" target="_blank" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>يزن ترافل</h3>
+                    <p>وجهتك المثالية للسياحة والسفر في مصر والعالم العربي</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/201273426669"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="index.html">الرئيسية</a></li>
+                        <li><a href="index.html#hotels">الفنادق</a></li>
+                        <li><a href="index.html#tours">الرحلات</a></li>
+                        <li><a href="index.html#offers">العروض</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>تواصل معنا</h4>
+                    <p><i class="fas fa-phone"></i> 01273426669</p>
+                    <p><i class="fas fa-envelope"></i> abdo.heem12@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> مصر</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 يزن ترافل. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/hotel-details.js"></script>
+</body>
+</html>
