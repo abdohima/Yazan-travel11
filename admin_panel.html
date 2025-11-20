@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><title>Admin Panel - TET</title>
+<style>body{font-family:Arial;padding:20px} table{width:100%;border-collapse:collapse} th,td{padding:8px;border:1px solid #ccc;text-align:right}</style>
+</head><body>
+<h2>لوحة تحكم تجريبية</h2>
+<p>القسم: الحجوزات</p>
+<table>
+  <thead><tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>البريد</th><th>نوع الرحلة</th><th>السعر</th></tr></thead>
+  <tbody id="bookingsBody"></tbody>
+</table>
+<script>
+const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+const tbody = document.getElementById('bookingsBody');
+if(bookings.length===0){
+  tbody.innerHTML = '<tr><td colspan="6">لا توجد حجوزات</td></tr>';
+} else {
+  bookings.forEach((b,i)=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i+1}</td><td>${b.name||'-'}</td><td>${b.phone||'-'}</td><td>${b.email||'-'}</td><td>${b.type||'-'}</td><td>${b.price||'-'}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+</script>
+</body></html>

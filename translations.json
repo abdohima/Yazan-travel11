@@ -1,0 +1,30 @@
+{
+  "ar": {
+    "heroTitle": "استمتع بأفضل عروض السفر والسياحة",
+    "heroDesc": "مثال بسيط: نظام تعدد لغات، واتس آب، InstaPay ولوحة تحكم.",
+    "bookNow": "احجز الآن",
+    "payment": "الدفع عبر InstaPay",
+    "whatsappMessage": "مرحباً، أريد الاستفسار عن عروض السفر"
+  },
+  "en": {
+    "heroTitle": "Enjoy the Best Travel Offers",
+    "heroDesc": "Simple example: multilingual system, WhatsApp, InstaPay and admin panel.",
+    "bookNow": "Book Now",
+    "payment": "Pay via InstaPay",
+    "whatsappMessage": "Hello, I want to inquire about travel offers"
+  },
+  "ru": {
+    "heroTitle": "Наслаждайтесь лучшими предложениями путешествий",
+    "heroDesc": "Простой пример: мультиязычность, WhatsApp, InstaPay и панель администратора.",
+    "bookNow": "Забронировать",
+    "payment": "Оплатить через InstaPay",
+    "whatsappMessage": "Здравствуйте, я хочу узнать о туристических предложениях"
+  },
+  "de": {
+    "heroTitle": "Genießen Sie die besten Reiseangebote",
+    "heroDesc": "Ein einfaches Beispiel: Mehrsprachigkeit, WhatsApp, InstaPay und Admin-Panel.",
+    "bookNow": "Jetzt buchen",
+    "payment": "Zahle mit InstaPay",
+    "whatsappMessage": "Hallo, ich möchte mich über Reiseangebote informieren"
+  }
+}

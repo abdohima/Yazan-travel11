@@ -1,62 +1,56 @@
 <!doctype html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yazan Travel</title>
-<link rel="stylesheet" href="style.min.css">
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TET - مثال متعدد اللغات</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding:20px; background:#0a0a0a; color:#00ffff; }
+    .btn { padding:8px 12px; margin:4px; cursor:pointer; border-radius:4px; border:1px solid #00ffff; background:transparent; color:inherit; }
+    .lang { margin-bottom:10px; }
+    #cursor { position:fixed; width:12px; height:12px; border-radius:50%; background:#00ffff; pointer-events:none; transform:translate(-50%,-50%); z-index:9999; }
+  </style>
 </head>
 <body>
-<!-- Loading Screen -->
-<div id="loading-screen">
-  <div class="loader"></div>
-</div>
+  <div id="cursor"></div>
+  <h1 id="title">تحميل...</h1>
+  <p id="desc"></p>
+  <div class="lang">
+    <button class="btn" data-lang="ar">العربية</button>
+    <button class="btn" data-lang="en">English</button>
+    <button class="btn" data-lang="ru">Русский</button>
+    <button class="btn" data-lang="de">Deutsch</button>
+  </div>
 
-<!-- Top button -->
-<button id="topBtn" title="Top">↑</button>
+  <button id="bookBtn" class="btn">احجز الآن</button>
+  <button id="payBtn" class="btn">ادفع عبر InstaPay</button>
+  <a id="waLink" class="btn" href="#" target="_blank">WhatsApp</a>
 
-<header class="site-header fade-in">
-  <h1>Yazan Travel</h1>
-</header>
+  <script>
+  let translations = {};
+  let currentLang = 'ar';
+  async function loadTranslations(){
+    const res = await fetch('translations.json');
+    translations = await res.json();
+    applyTranslations();
+  }
+  function applyTranslations(){
+    document.getElementById('title').textContent = translations[currentLang].heroTitle || 'TET';
+    document.getElementById('desc').textContent = translations[currentLang].heroDesc || '';
+    document.getElementById('bookBtn').textContent = translations[currentLang].bookNow || 'Book';
+    document.getElementById('payBtn').textContent = translations[currentLang].payment || 'Pay';
+    const waMsg = encodeURIComponent(translations[currentLang].whatsappMessage || 'Hello');
+    document.getElementById('waLink').href = `https://wa.me/201273426669?text=${waMsg}`;
+  }
+  document.querySelectorAll('.btn[data-lang]').forEach(b=>{
+    b.addEventListener('click', ()=>{ currentLang = b.getAttribute('data-lang'); applyTranslations(); });
+  });
 
-<main>
-  <section id="hero" class="fade-in">
-    <h2>اكتشف رحلتك القادمة</h2>
-    <p>أفضل الوجهات والعروض السياحية.</p>
-  </section>
+  // cursor effect
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e=>{ cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
 
-  <section id="destinations" class="fade-in">
-    <h3>الوجهات</h3>
-    <div id="dest-list">جاري التحميل...</div>
-  </section>
-
-  <section id="offers" class="fade-in">
-    <h3>العروض</h3>
-    <div id="offers-list">جاري التحميل...</div>
-  </section>
-
-  <!-- Admin link -->
-  <p style="text-align:center; margin-top:2rem;">
-    <a href="admin-login.html">لوحة الإدارة</a>
-  </p>
-</main>
-
-<!-- Audio (background music) -->
-<audio id="music" preload="auto" playsinline loop>
-  <source src="https://files.catbox.moe/7kkyxn.mp3" type="audio/mpeg">
-</audio>
-
-<!-- Scripts -->
-<script src="enhancements.js"></script>
-<script type="module" src="firebase.js"></script>
-<script type="module" src="app.js"></script>
-
-<!-- Loading hide -->
-<script>
-window.addEventListener("load", () => {
-  document.body.classList.add("loaded");
-});
-</script>
+  loadTranslations();
+  </script>
 </body>
 </html>
