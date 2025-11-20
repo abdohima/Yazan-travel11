@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تفاصيل الفندق</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.hero-detail { position:relative; height:46vh; display:flex; align-items:flex-end; color:#fff; padding:24px; background-size:cover; background-position:center; }
+.hero-overlay { position:absolute; inset:0; backdrop-filter: blur(4px) brightness(.45); }
+.detail-card { position:relative; z-index:2; background: rgba(255,255,255,0.06); padding:18px; border-radius:10px; max-width:900px; width:100%; margin-bottom:18px; }
+.controls { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+.btn { padding:10px 14px; border-radius:8px; background:#00bcd4; color:#000; border:0; cursor:pointer; }
+.share { background:#6c63ff; color:#fff; }
+.rate-stars { font-size:22px; cursor:pointer; color:gold; }
+</style>
+</head>
+<body>
+<header class="site-header fade-in"><h1>Yazan Travel</h1></header>
+
+<main>
+  <section class="hero-detail" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="detail-card">
+      <h2 id="name">جارٍ التحميل...</h2>
+      <p id="location"></p>
+      <strong id="price"></strong>
+      <div class="controls">
+        <button id="bookBtn" class="btn">احجز الآن عبر واتساب</button>
+        <button id="shareBtn" class="btn share">مشاركة</button>
+        <div id="rating" style="display:flex;align-items:center;gap:8px">
+          <span>تقييم:</span>
+          <div id="stars" class="rate-stars">☆☆☆☆☆</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:900px;margin:18px auto;padding:0 12px;">
+    <div id="desc" class="fade-in">...</div>
+  </section>
+</main>
+
+<script type="module">
+import { db } from './firebase.js';
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+function qparam(name){ const u = new URL(location.href); return u.searchParams.get(name); }
+
+async function loadHotel(){
+  const nameQ = qparam('name');
+  const all = await getDocs(collection(db,'hotels'));
+  let found = null;
+  all.forEach(d => {
+    const data = d.data();
+    if(data.name === nameQ) found = data;
+  });
+
+  if(!found){ document.getElementById('name').textContent='لم يتم العثور على الفندق'; return; }
+
+  document.getElementById('hero').style.backgroundImage = `url(${found.image})`;
+  document.getElementById('name').textContent = found.name;
+  document.getElementById('location').textContent = found.location || '';
+  document.getElementById('price').textContent = found.price ? 'السعر: ' + found.price : '';
+  document.getElementById('desc').textContent = found.desc || '';
+
+  document.getElementById('bookBtn').addEventListener('click', ()=>{
+    const text = `مرحبًا، أرغب في حجز هذا الفندق: ${found.name} - ${found.location || ''}`;
+    const phone = ''; // ضع رقم واتساب هنا إن رغبت
+    const url = phone ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(url,'_blank');
+  });
+
+  document.getElementById('shareBtn').addEventListener('click', async ()=>{
+    const shareData = { title: found.name, text: found.desc, url: location.href };
+    if(navigator.share){ try{ await navigator.share(shareData); }catch(e){ alert('فشل المشاركة'); } }
+    else { navigator.clipboard.writeText(location.href); alert('رابط الصفحة نُسخ'); }
+  });
+
+  // rating local
+  const starsEl = document.getElementById('stars');
+  const key = 'rating_hotel_' + found.name;
+  const saveRate = (n)=> localStorage.setItem(key, n);
+  const loadRate = ()=> parseInt(localStorage.getItem(key) || '0',10);
+  function render(n){ starsEl.textContent = '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
+  let cur = loadRate(); render(cur);
+  starsEl.addEventListener('click', (e)=>{
+    const rect = starsEl.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const n = Math.ceil((x/rect.width)*5);
+    cur = n; saveRate(n); render(n);
+    alert('شكراً لتقييمك!');
+  });
+}
+
+loadHotel();
+</script>
+</body>
+</html>

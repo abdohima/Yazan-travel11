@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تفاصيل الوجهة</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.hero-detail {
+  position: relative;
+  height: 52vh;
+  display:flex;
+  align-items:flex-end;
+  color:#fff;
+  padding:24px;
+  background-size:cover;
+  background-position:center;
+}
+.hero-overlay {
+  position:absolute; inset:0;
+  backdrop-filter: blur(4px) brightness(.45);
+}
+.detail-card {
+  position:relative; z-index:2;
+  background: rgba(255,255,255,0.06);
+  padding:18px; border-radius:10px; max-width:900px; width:100%;
+  margin-bottom:18px;
+}
+.controls { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+.btn { padding:10px 14px; border-radius:8px; background:#00bcd4; color:#000; border:0; cursor:pointer; }
+.share { background:#6c63ff; color:#fff; }
+.rate-stars { font-size:22px; cursor:pointer; color:gold; }
+.gallery { display:flex; gap:8px; margin-top:12px; }
+.gallery img { width:100px; height:70px; object-fit:cover; border-radius:6px; cursor:pointer; }
+@media (max-width:600px){ .hero-detail{height:40vh; padding:12px} .gallery img{width:70px;height:50px} }
+</style>
+</head>
+<body>
+<header class="site-header fade-in"><h1>Yazan Travel</h1></header>
+
+<main>
+  <section id="hero" class="hero-detail">
+    <div class="hero-overlay"></div>
+    <div class="detail-card">
+      <h2 id="title">جاري التحميل...</h2>
+      <p id="location"></p>
+      <div class="controls">
+        <button id="bookBtn" class="btn">احجز الآن عبر واتساب</button>
+        <button id="shareBtn" class="btn share">مشاركة</button>
+        <div id="rating" style="display:flex;align-items:center;gap:8px">
+          <span>تقييم:</span>
+          <div id="stars" class="rate-stars">☆☆☆☆☆</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:900px;margin:18px auto;padding:0 12px;">
+    <div id="desc" class="fade-in">...</div>
+    <div class="gallery" id="gallery"></div>
+  </section>
+</main>
+
+<script type="module">
+import { db } from './firebase.js';
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+function qparam(name){ const u = new URL(location.href); return u.searchParams.get(name); }
+
+async function loadDestination(){
+  const title = qparam('title');
+  const all = await getDocs(collection(db,'destinations'));
+  let found = null;
+  all.forEach(d => {
+    const data = d.data();
+    if(data.title === title) found = data;
+  });
+
+  if(!found){ document.getElementById('title').textContent='لم يتم العثور على الوجهة'; return; }
+
+  document.querySelector('.hero-detail').style.backgroundImage = `url(${found.image})`;
+  document.getElementById('title').textContent = found.title;
+  document.getElementById('location').textContent = found.location || '';
+  document.getElementById('desc').textContent = found.desc || '';
+
+  // gallery (if multiple images future-proof)
+  const galleryEl = document.getElementById('gallery');
+  galleryEl.innerHTML = '';
+  const imgs = (found.images && found.images.length) ? found.images : [found.image];
+  imgs.forEach(src=>{
+    const img = document.createElement('img'); img.src = src;
+    img.addEventListener('click', ()=>{ window.open(src, '_blank') });
+    galleryEl.appendChild(img);
+  });
+
+  // booking
+  const bookBtn = document.getElementById('bookBtn');
+  bookBtn.addEventListener('click', ()=>{
+    const text = `مرحبًا، أرغب في حجز هذه الوجهة: ${found.title} - ${found.location || ''}`;
+    const phone = ''; // ضع رقم واتساب هنا إن رغبت
+    const url = phone ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(url,'_blank');
+  });
+
+  // share
+  document.getElementById('shareBtn').addEventListener('click', async ()=>{
+    const shareData = { title: found.title, text: found.desc, url: location.href };
+    if(navigator.share){ try{ await navigator.share(shareData); }catch(e){ alert('فشل المشاركة'); } }
+    else { navigator.clipboard.writeText(location.href); alert('رابط الصفحة نُسخ للحافظة'); }
+  });
+
+  // rating (local)
+  const starsEl = document.getElementById('stars');
+  const key = 'rating_dest_' + found.title;
+  const saveRate = (n)=> localStorage.setItem(key, n);
+  const loadRate = ()=> parseInt(localStorage.getItem(key) || '0',10);
+  function render(n){ starsEl.textContent = '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n); }
+  let cur = loadRate(); render(cur);
+  starsEl.addEventListener('click', (e)=>{
+    const rect = starsEl.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const n = Math.ceil((x/rect.width)*5);
+    cur = n; saveRate(n); render(n);
+    alert('شكراً لتقييمك!');
+  });
+}
+
+loadDestination();
+</script>
+</body>
+</html>

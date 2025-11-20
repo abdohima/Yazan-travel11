@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin - Yazan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>
+if (localStorage.getItem('isAdmin') !== 'yes') {
+  location.href = 'admin-login.html';
+}
+</script>
+
+<h2>لوحة الإدارة</h2>
+
+<section>
+  <h3>أضف وجهة</h3>
+  <form id="addDestinationForm">
+    <input id="destTitle" placeholder="العنوان" required />
+    <input id="destLocation" placeholder="الموقع" />
+    <textarea id="destDesc" placeholder="الوصف"></textarea>
+    <input id="destImage" type="file" accept="image/*" />
+    <button type="submit">أضف الوجهة</button>
+  </form>
+</section>
+
+<section>
+  <h3>أضف فندق</h3>
+  <form id="addHotelForm">
+    <input id="hotelName" placeholder="اسم الفندق" required />
+    <input id="hotelLocation" placeholder="الموقع" />
+    <textarea id="hotelDesc" placeholder="الوصف"></textarea>
+    <input id="hotelPrice" placeholder="السعر" />
+    <input id="hotelImage" type="file" accept="image/*" />
+    <button type="submit">أضف الفندق</button>
+  </form>
+</section>
+
+<section>
+  <h3>إدارة المحتوى</h3>
+  <div id="adminLog"></div>
+</section>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

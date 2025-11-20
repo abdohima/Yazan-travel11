@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="center-box">
+  <h2>تسجيل دخول الأدمن</h2>
+  <input id="pass" type="password" placeholder="كلمة السر" />
+  <br><br>
+  <button id="loginBtn">دخول</button>
+</div>
+
+<script>
+const ADMIN_PASS = "yazan123"; // غيّرها لو حبيت
+
+document.getElementById('loginBtn').addEventListener('click', ()=> {
+  const p = document.getElementById('pass').value;
+  if (p === ADMIN_PASS) {
+    localStorage.setItem('isAdmin','yes');
+    location.href = 'admin.html';
+  } else {
+    alert('كلمة السر خاطئة');
+  }
+});
+</script>
+</body>
+</html>
