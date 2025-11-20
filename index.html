@@ -1640,5 +1640,29 @@
 <script type="module" src="firebase.js"></script>
 <script type="module" src="app.js"></script>
 
+
+<audio id="music" preload="auto" playsinline loop>
+    <source src="https://files.catbox.moe/7kkyxn.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const audio = document.getElementById("music");
+
+    if (!audio) return;
+
+    audio.volume = 0.2; // volume lowered
+
+    function playMusic() {
+        audio.play().catch(()=>{});
+        document.removeEventListener("click", playMusic);
+        document.removeEventListener("touchstart", playMusic);
+    }
+
+    document.addEventListener("click", playMusic, { once: true });
+    document.addEventListener("touchstart", playMusic, { once: true });
+});
+</script>
+
 </body>
 </html>
